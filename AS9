@@ -1,0 +1,45 @@
+#1
+def count_lines(filename):
+    count = 0
+    with open(filename, 'r') as f:
+        for line in f:
+            if line.strip():  # ignore blank lines
+                count += 1
+    return count
+#2
+def find_keyword(filename, keyword):
+    line_numbers = []
+    with open(filename, 'r') as f:
+        for i, line in enumerate(f, start=1):  # 1-based index
+            if keyword in line:
+                line_numbers.append(i)
+    return line_numbers
+#3
+def average_score(filename):
+    total, count = 0, 0
+    with open(filename, 'r') as f:
+        for line in f:
+            if line.strip():
+                name, score = line.split(',')
+                total += int(score.strip())
+                count += 1
+    return total / count if count > 0 else 0
+#4
+def caesar_cipher(filename, shift, direction, output_file):
+    result = []
+    with open(filename, 'r') as f:
+        text = f.read()
+
+    for char in text:
+        if char.isalpha():
+            base = 65 if char.isupper() else 97
+            if direction == 'right':
+                new_char = chr((ord(char) - base + shift) % 26 + base)
+            else:  # left shift
+                new_char = chr((ord(char) - base - shift) % 26 + base)
+            result.append(new_char)
+        else:
+            result.append(char)
+
+    with open(output_file, 'w') as f:
+        f.write(''.join(result))
