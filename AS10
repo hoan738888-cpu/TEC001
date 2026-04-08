@@ -1,0 +1,87 @@
+import requests
+
+def get_chuck_norris_joke():
+    url = "https://api.chucknorris.io/jokes/random"
+    response = requests.get(url)
+    if response.status_code == 200:
+        joke = response.json()["value"]
+        print(joke)
+    else:
+        print("Failed to fetch joke.")
+
+get_chuck_norris_joke()
+import requests
+
+def get_weather(city_name, api_key):
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        description = data["weather"][0]["description"]
+        temp_kelvin = data["main"]["temp"]
+        temp_celsius = temp_kelvin - 273.15
+        print(f"Weather: {description}, Temperature: {temp_celsius:.2f} °C")
+    else:
+        print("City not found or API error.")
+
+# Example usage (replace with your own API key):
+# get_weather("Hanoi", "YOUR_API_KEY")
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+@app.route("/prime_number/<int:number>", methods=["GET"])
+def prime_number(number):
+    result = {"Number": number, "isPrime": is_prime(number)}
+    return jsonify(result)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+@app.route("/prime_number/<int:number>", methods=["GET"])
+def prime_number(number):
+    result = {"Number": number, "isPrime": is_prime(number)}
+    return jsonify(result)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+[
+  {"icao":"LFLL","name":"Lyon Saint-Exupery Airport","city":"Lyon","country":"FR"},
+  {"icao":"KJFK","name":"John F Kennedy International Airport","city":"New York","country":"US"}
+]
+from flask import Flask, jsonify
+import json
+
+app = Flask(__name__)
+
+with open("airports.json") as f:
+    airports = json.load(f)
+
+@app.route("/airport/<icao>", methods=["GET"])
+def get_airport(icao):
+    for airport in airports:
+        if airport["icao"].upper() == icao.upper():
+            return jsonify(airport)
+    return jsonify({"error": "Airport not found"}), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)
